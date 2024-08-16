@@ -1,0 +1,9 @@
+/* app.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Añade cualquier estilo adicional aquí */
+.text-orange-500 {
+    @apply text-orange-500;
+}
