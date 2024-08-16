@@ -5,49 +5,41 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 
-class ClientesController extends Controller
+class ClienteController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $clientes = Cliente::all();
         return view('clientes.index', compact('clientes'));
     }
 
-    public function create() {
+    public function create()
+    {
         return view('clientes.create');
     }
 
-    public function store(Request $request) {
-        $validated = $request->validate([
-            'nombres' => 'required|max:255',
-            'email' => 'required|email|unique:clientes',
-            'direccion' => 'required',
-            'fono' => 'required|numeric',
-        ]);
-
-        Cliente::create($validated);
-
-        return redirect()->route('clientes.index')->with('success', 'Cliente creado con éxito.');
+    public function store(Request $request)
+    {
+        $request->validate(Cliente::$rules, Cliente::$messages);
+        Cliente::create($request->all());
+        return redirect()->route('clientes.index')->with('success', 'Cliente creado exitosamente.');
     }
 
-    public function edit(Cliente $cliente) {
+    public function edit(Cliente $cliente)
+    {
         return view('clientes.edit', compact('cliente'));
     }
 
-    public function update(Request $request, Cliente $cliente) {
-        $validated = $request->validate([
-            'nombres' => 'required|max:255',
-            'email' => 'required|email|unique:clientes,email,' . $cliente->id,
-            'direccion' => 'required',
-            'fono' => 'required|numeric',
-        ]);
-
-        $cliente->update($validated);
-
-        return redirect()->route('clientes.index')->with('success', 'Cliente actualizado con éxito.');
+    public function update(Request $request, Cliente $cliente)
+    {
+        $request->validate(Cliente::$rules, Cliente::$messages);
+        $cliente->update($request->all());
+        return redirect()->route('clientes.index')->with('success', 'Cliente actualizado exitosamente.');
     }
 
-    public function destroy(Cliente $cliente) {
+    public function destroy(Cliente $cliente)
+    {
         $cliente->delete();
-        return redirect()->route('clientes.index')->with('success', 'Cliente eliminado con éxito.');
+        return redirect()->route('clientes.index')->with('success', 'Cliente eliminado exitosamente.');
     }
 }
